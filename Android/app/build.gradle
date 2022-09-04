@@ -7,20 +7,12 @@ android {
     }
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.yolandaliou.littlemonsters"
         minSdkVersion 15
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        def contentProviderAuthority = applicationId + ".stickercontentprovider"
-        // Creates a placeholder property to use in the manifest.
-        manifestPlaceholders =
-                [contentProviderAuthority: contentProviderAuthority]
-        // Adds a new field for the authority to the BuildConfig class.
-        buildConfigField("String",
-                "CONTENT_PROVIDER_AUTHORITY",
-                "\"${contentProviderAuthority}\"")
+
     }
     buildTypes {
         debug {
@@ -32,6 +24,35 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors{
+        yoga_en{
+            dimension "version"
+            applicationId "com.yolandaliou.littlemonsters.yoga_en"
+            versionNameSuffix "-yoga-en"
+            def contentProviderAuthority = applicationId + ".stickercontentprovider"
+            // Creates a placeholder property to use in the manifest.
+            manifestPlaceholders =
+                    [contentProviderAuthority: contentProviderAuthority]
+            // Adds a new field for the authority to the BuildConfig class.
+            buildConfigField("String",
+                    "CONTENT_PROVIDER_AUTHORITY",
+                    "\"${contentProviderAuthority}\"")
+        }
+        yoga_cn{
+            dimension "version"
+            applicationId "com.yolandaliou.littlemonsters.yoga_cn"
+            versionNameSuffix "-yoga-cn"
+            def contentProviderAuthority = applicationId + ".stickercontentprovider"
+            // Creates a placeholder property to use in the manifest.
+            manifestPlaceholders =
+                    [contentProviderAuthority: contentProviderAuthority]
+            // Adds a new field for the authority to the BuildConfig class.
+            buildConfigField("String",
+                    "CONTENT_PROVIDER_AUTHORITY",
+                    "\"${contentProviderAuthority}\"")
         }
     }
     compileOptions {
