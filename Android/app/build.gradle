@@ -1,18 +1,27 @@
 apply plugin: 'com.android.application'
 
 android {
+
     //the compression of webp file during build causes problem with FileDescriptor in ContentProvider.
     aaptOptions {
         noCompress "webp"
     }
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+    }
+    signingConfigs {
+        release {
+            keyAlias 'all'
+            keyPassword 'keystore'
+            storeFile file('keystore.jks')
+            storePassword 'keystore'
+        }
     }
     buildTypes {
         debug {
@@ -21,6 +30,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -99,22 +109,10 @@ private void checkApplicationIdInDebug() {
 }
 
 
-task checkRelease {
-    doLast {
-        println("checkRelease")
-        if (android.defaultConfig.applicationId.startsWith("com.example")) {
-            throw new GradleException("applicationId in defaultConfig cannot start with com.example, please change your applicationId in app/build.gradle")
-        }
-    }
-}
-
 tasks.whenTaskAdded { task ->
     println(task.name)
     if (task.name.contains("assembleDebug")) {
         task.dependsOn checkDebug
-    }
-    if (task.name.contains("assembleRelease")) {
-        task.dependsOn checkRelease
     }
 }
 
